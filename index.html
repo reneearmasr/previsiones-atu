@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Previsiones Presupuestarias – ATU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Envoltorio de GitHub Pages: muestra el formulario de Apps Script dentro de un iframe */
+  :root { --navy:#1f3a5f; --ink:#14213d; --muted:#8a94a6; --bg:#f3f5f8; --teal:#0f766e; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+    font:14px/1.45 "IBM Plex Sans", system-ui, sans-serif; }
+  body { display:flex; flex-direction:column; }
+  .bar { background:var(--navy); color:#fff; padding:8px 16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .bar b { font-weight:600; }
+  .bar span { opacity:.75; font-size:12px; }
+  .bar .sp { flex:1; }
+  .bar a { color:#fff; font-size:13px; border:1px solid rgba(255,255,255,.35); border-radius:6px; padding:5px 10px; text-decoration:none; }
+  .bar a:hover { background:rgba(255,255,255,.12); }
+  iframe { flex:1; width:100%; border:0; background:#fff; }
+  .aviso { display:none; max-width:560px; margin:48px auto; padding:24px; background:#fff; border-radius:10px;
+    box-shadow:0 1px 3px rgba(16,24,40,.1); }
+  .aviso a { display:inline-block; margin-top:12px; background:var(--teal); color:#fff; padding:8px 16px;
+    border-radius:8px; text-decoration:none; font-weight:500; }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <b>Previsiones Presupuestarias</b><span>ATU · Oficina de Planeamiento y Presupuesto</span>
+    <span class="sp"></span>
+    <a id="abrir" href="#" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a>
+  </div>
+
+  <iframe id="app" title="Formulario de previsiones presupuestarias" allow="clipboard-write"></iframe>
+
+  <div class="aviso" id="aviso">
+    <b>Falta configurar la dirección del formulario.</b>
+    <p>Edite este archivo y pegue la URL /exec de Apps Script en la constante <code>APP_URL</code>.</p>
+  </div>
+
+<script>
+  // ▼▼▼ Pega aquí la URL de tu aplicación web (Implementar → Gestionar implementaciones → URL que termina en /exec)
+  const APP_URL = 'https://script.google.com/macros/s/AKfycbzggga_LPM8uAg6o6j43FHU-vccGbuZmcET53lrAVwjqF6R2pKYliNs44XXXD7_5fnrzg/exec';
+  // ▲▲▲
+
+  const ok = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(APP_URL);
+  document.getElementById('abrir').href = ok ? APP_URL : '#';
+  if (ok) document.getElementById('app').src = APP_URL;
+  else { document.getElementById('app').style.display = 'none'; document.getElementById('aviso').style.display = 'block'; }
+</script>
+</body>
+</html>
