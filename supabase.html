@@ -577,10 +577,33 @@ window.SUPA = (function () {
     if (document.getElementById('supaBar')) return;
     const b = document.createElement('div'); b.id = 'supaBar';
     b.innerHTML = '<span>Sesión iniciada con Google</span>'
-      + '<span class="sp"></span><span id="supaMail"></span><button type="button" id="supaSalir">Cerrar sesión</button>';
+      + '<span class="sp"></span><a id="supaUlt" target="_blank" rel="noopener" style="display:none;color:inherit"></a>'
+      + '<button type="button" id="supaResp" style="display:none" title="Guarda toda la base en el Drive de OPP (carpeta «Respaldos Previsiones ATU»)">💾 Copia de seguridad</button>'
+      + '<span id="supaMail"></span><button type="button" id="supaSalir">Cerrar sesión</button>';
     document.body.insertBefore(b, document.body.firstChild);
     document.getElementById('supaMail').textContent = email || '';
     document.getElementById('supaSalir').onclick = salir;
+    document.getElementById('supaResp').onclick = function () {
+      const b = this; b.disabled = true;
+      llamar('solicitarRespaldo', []).then(r => { b.disabled = false; pintarUlt(r);
+        (typeof toast === 'function' ? toast : alert)('Copia de seguridad solicitada: estará en el Drive de OPP (carpeta «Respaldos Previsiones ATU») en los próximos 5 minutos.'); })
+        .catch(e => { b.disabled = false; (typeof toast === 'function' ? toast : alert)(e.message || e); });
+    };
+  }
+  function pintarUlt(r) {
+    const a = document.getElementById('supaUlt'); if (!a || !r) return;
+    const u = r.ultimo;
+    if (r.solicitado) { a.style.display = ''; a.removeAttribute('href'); a.textContent = 'Copia en curso…'; return; }
+    if (!u) { a.style.display = 'none'; return; }
+    const f = new Date(u.fecha), p2 = x => String(x).padStart(2, '0');
+    a.textContent = 'Última copia: ' + p2(f.getDate()) + '/' + p2(f.getMonth() + 1) + ' ' + p2(f.getHours()) + ':' + p2(f.getMinutes());
+    a.title = u.nombre + ' · ' + u.filas + ' filas'; if (u.url) a.href = u.url; a.style.display = '';
+  }
+  /** tras cargar los datos: el botón de copia de seguridad solo para OPP-UP (ADMIN) */
+  function alCargar(d) {
+    if (!d || !d.user || d.user.rol !== 'ADMIN') return;
+    const b = document.getElementById('supaResp'); if (b) b.style.display = '';
+    llamar('estadoRespaldo', []).then(pintarUlt).catch(() => {});
   }
   function pantallaLogin(msg) {
     const L = document.getElementById('loading'); L.style.display = 'flex'; L.classList.add('supaL');
@@ -590,7 +613,7 @@ window.SUPA = (function () {
       + '<p style="font-size:12px">Use la cuenta registrada por la OPP – Unidad de Presupuesto.</p></div>';
     document.getElementById('supaG').onclick = entrar;
   }
-  return { sb, sesion, llamar, entrar, salir, barra, pantallaLogin };
+  return { sb, sesion, llamar, entrar, salir, barra, pantallaLogin, alCargar };
 })();
 </script>
 <!--MOCK-->
@@ -645,7 +668,7 @@ async function load(){
 }
 function load0(){
   busy(true);
-  api('getBootstrap').then(d => { D = d; renderAll(); busy(false); iniciarLatido(); })
+  api('getBootstrap').then(d => { D = d; renderAll(); busy(false); iniciarLatido(); if (window.SUPA && !IS_GAS) SUPA.alCargar(d); })
     .catch(e => { busy(false); const L = $('#loading'); L.style.display='flex'; L.style.flexDirection='column'; L.style.gap='8px'; L.style.padding='24px'; L.style.textAlign='center';
       const msg = String(e.message || e);
       if (window.SUPA && !IS_GAS && (e.status === 401 || e.status === 403)) return SUPA.pantallaLogin(msg);
