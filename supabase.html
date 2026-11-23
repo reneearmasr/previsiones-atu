@@ -576,7 +576,7 @@ window.SUPA = (function () {
   function barra(email) {
     if (document.getElementById('supaBar')) return;
     const b = document.createElement('div'); b.id = 'supaBar';
-    b.innerHTML = '<span>🧪 <b>Versión de prueba en Supabase</b> · ya permite registrar y modificar, pero <b>lo que guarde aquí no pasa a la hoja de Google</b> (el aplicativo oficial sigue siendo el actual). SIAF y CCP: copia del 23/11/2026.</span>'
+    b.innerHTML = '<span>🧪 <b>Versión de prueba en Supabase</b> · ya permite registrar y modificar, pero <b>lo que guarde aquí no pasa a la hoja de Google</b> (el aplicativo oficial sigue siendo el actual hasta el día del cambio).</span>'
       + '<span class="sp"></span><span id="supaMail"></span><button type="button" id="supaSalir">Cerrar sesión</button>';
     document.body.insertBefore(b, document.body.firstChild);
     document.getElementById('supaMail').textContent = email || '';
@@ -1620,7 +1620,7 @@ $('#btnOtraCadena').onclick = () => {
   $('#btnOtraCadena').hidden = true; $('#btnEliminar').hidden = true; $('#btnAnexoPrev').hidden = true; $('#btnHistPrev').hidden = true;
   renderForm(`<div class="msg warn">Registre aquí otra cadena (SEC FUN / clasificador) del mismo contrato. Ingrese solo los montos que corresponden a esta cadena: el monto del contrato de esta fila se calcula con ellos y el total del contrato será la suma de sus cadenas (no se duplica).</div>`);
 };
-$('#btnSiaf').onclick = () => { busy(true); api('actualizarSiafWeb').then(d => { D=d; renderAll(); busy(false); toast('Base SIAF actualizada.'); })
+$('#btnSiaf').onclick = () => { busy(true); api('actualizarSiafWeb').then(d => { busy(false); if (d && d.solicitado) return toast('Solicitud enviada: la base SIAF y el reporte HOGI se cargarán en los próximos 5 minutos. Luego recargue la página.'); D=d; renderAll(); toast('Base SIAF actualizada.'); })
   .catch(e => { busy(false); toast(e.message||String(e)); }); };
 
 document.getElementById('formMain').addEventListener('change', e => {
