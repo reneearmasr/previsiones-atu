@@ -543,8 +543,8 @@ html.t26 .loading::before{content:"";width:34px;height:34px;border-radius:50%;bo
 <!-- ===== Versión Supabase (fase 2: solo consulta) ===== -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <style>
-#supaBar{position:sticky;top:0;z-index:40;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 16px;background:#fff7e6;border-bottom:1px solid #f1d59b;color:#7a4b00;font-size:12.5px}
-#supaBar b{font-weight:600}#supaBar .sp{flex:1}#supaBar button{font:inherit;border:1px solid #e2b866;background:#fff;color:#7a4b00;border-radius:6px;padding:3px 10px;cursor:pointer}
+#supaBar{position:sticky;top:0;z-index:40;display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 16px;background:#f3f5f8;border-bottom:1px solid #e3e7ee;color:#475467;font-size:12.5px}
+#supaBar b{font-weight:600}#supaBar .sp{flex:1}#supaBar button{font:inherit;border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:6px;padding:3px 10px;cursor:pointer}
 .supaLogin{max-width:440px;margin:0 auto;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center}
 .supaLogin h2{margin:0;font-size:19px}.supaLogin p{margin:0;color:var(--muted,#6b7280);font-weight:400;font-size:14px}
 .supaLogin button{display:inline-flex;gap:10px;align-items:center;border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:10px 18px;font:600 14px system-ui,sans-serif;cursor:pointer}
@@ -576,7 +576,7 @@ window.SUPA = (function () {
   function barra(email) {
     if (document.getElementById('supaBar')) return;
     const b = document.createElement('div'); b.id = 'supaBar';
-    b.innerHTML = '<span>🧪 <b>Versión de prueba en Supabase</b> · ya permite registrar y modificar, pero <b>lo que guarde aquí no pasa a la hoja de Google</b> (el aplicativo oficial sigue siendo el actual hasta el día del cambio).</span>'
+    b.innerHTML = '<span>Sesión iniciada con Google</span>'
       + '<span class="sp"></span><span id="supaMail"></span><button type="button" id="supaSalir">Cerrar sesión</button>';
     document.body.insertBefore(b, document.body.firstChild);
     document.getElementById('supaMail').textContent = email || '';
@@ -584,7 +584,7 @@ window.SUPA = (function () {
   }
   function pantallaLogin(msg) {
     const L = document.getElementById('loading'); L.style.display = 'flex'; L.classList.add('supaL');
-    L.innerHTML = '<div class="supaLogin"><h2>Previsiones Presupuestarias</h2><p>Versión de prueba en Supabase.</p>'
+    L.innerHTML = '<div class="supaLogin"><h2>Previsiones Presupuestarias</h2><p>Autoridad de Transporte Urbano para Lima y Callao · OPP</p>'
       + (msg ? '<p style="color:#b42318">' + String(msg).replace(/[<>&]/g, '') + '</p>' : '')
       + '<button type="button" id="supaG"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>Ingresar con Google</button>'
       + '<p style="font-size:12px">Use la cuenta registrada por la OPP – Unidad de Presupuesto.</p></div>';
